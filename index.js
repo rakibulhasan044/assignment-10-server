@@ -33,6 +33,7 @@ async function run() {
       res.send(result)
     })
 
+  
     app.get('/crafts/:id', async(req, res) => {
       const id = req.params.id;
       const query = {_id: new ObjectId(id)};
@@ -40,13 +41,22 @@ async function run() {
       res.send(result)
     })
 
+    app.get('/crafts/user/:email', async (req, res) => {
+      const userEmail = req.params.email;
+      const query = { userEmail: userEmail };
+          const result = await craftCollection.find(query).toArray();
+          res.send(result);
+  });
+
     app.post('/crafts', async(req, res) => {
       const newCraft = req.body;
       console.log(newCraft);
       const result = await craftCollection.insertOne(newCraft);
       res.send(result);
-
     })
+
+  
+
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
