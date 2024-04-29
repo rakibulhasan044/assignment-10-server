@@ -53,20 +53,31 @@ async function run() {
       res.send(result);
     });
 
-    app.patch("/crafts/:id", async (req, res) => {
+    app.put("/crafts/:id", async (req, res) => {
       const id = req.params.id;
       const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
       const updateCraft = req.body;
-      const craft = {
+      const updateDoc = {
         $set: {
           itemName: updateCraft.itemName,
+          subcategory: updateCraft.subcategory,
           price: updateCraft.price,
           description: updateCraft.description,
           rating: updateCraft.rating,
           time: updateCraft.time,
           photourl: updateCraft.photourl,
+          stock: updateCraft.stock,
+          customization: updateCraft.customization,
         },
       };
+      
+      const result = await craftCollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
+      res.send(result);
     });
 
     await client.db("admin").command({ ping: 1 });
