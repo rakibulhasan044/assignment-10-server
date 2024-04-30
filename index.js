@@ -25,9 +25,16 @@ async function run() {
     await client.connect();
 
     const craftCollection = client.db("carftDB").collection("carft");
+    const adminCraftCollection = client.db("adminCarftDB").collection("adminCarft");
 
     app.get("/crafts", async (req, res) => {
       const cursor = craftCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.get("/admincrafts", async (req, res) => {
+      const cursor = adminCraftCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
