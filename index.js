@@ -46,6 +46,13 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/crafts/:subcategory", async (req, res) => {
+      const subcategory = req.params.subcategory;
+      const query = { subcategory: subcategory };
+      const result = await craftCollection.find(query).toArray();
+      res.send(result);
+    });
+
     app.post("/crafts", async (req, res) => {
       const newCraft = req.body;
       console.log(newCraft);
